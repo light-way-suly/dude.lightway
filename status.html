@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>mikrotik hotspot > status</title>
+$(if refresh-timeout)
+<meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+$(endif)
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+<style type="text/css">
+    
+    
+        @font-face {
+            font-family: 'k24'; /*a name to be used later*/
+            src: url('font/k24.ttf'); /*URL to font*/
+        }
+        
+        
+
+        body {
+          font-family: 'k24';
+            direction: rtl
+        }
+        
+        p {
+          font-family: 'k24';
+        }
+    
+<!--
+textarea,input,select {
+	background-color: #FDFBFB;
+	border: 1px #BBBBBB solid;
+	padding: 2px;
+	margin: 1px;
+	font-size: 14px;
+	color: #808080;
+}
+
+.tabula{
+ 
+border-width: 1px; 
+border-collapse: collapse; 
+border-color: #c1c1c1; 
+background-color: transparent;
+font-family: verdana;
+font-size: 11px;
+}
+
+body{ color: #737373; font-size: 12px; font-family: verdana; }
+
+a, a:link, a:visited, a:active { color: #AAAAAA; text-decoration: none; font-size: 12px; }
+a:hover { border-bottom: 1px dotted #c1c1c1; color: #AAAAAA; }
+img {border: none;}
+td { font-size: 12px; padding: 4px;}
+
+-->
+</style>
+<script language="JavaScript">
+<!--
+$(if advert-pending == 'yes')
+    var popup = '';
+    function focusAdvert() {
+	if (window.focus) popup.focus();
+    }
+    function openAdvert() {
+	popup = open('$(link-advert)', 'hotspot_advert', '');
+	setTimeout("focusAdvert()", 1000);
+    }
+$(endif)
+    function openLogout() {
+	if (window.name != 'hotspot_status') return true;
+        open('$(link-logout)', 'hotspot_logout', 'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+	window.close();
+	return false;
+    }
+//-->
+</script>
+</head>
+<body style="background:#313848;" bottommargin="0" topmargin="0" leftmargin="0" rightmargin="0"
+$(if advert-pending == 'yes')
+	onLoad="openAdvert()"
+$(endif)
+>
+<table width="100%" height="100%">
+<tr><td align="center"><a href="http://www.light-way.co" target="_blank" style="border: none;"><img src="img/logobottom.png" alt="LightWay" width="100px" /></a></td></tr>
+<tr>
+<td align="center" valign="middle">
+<form action="$(link-logout)" name="logout" onSubmit="return openLogout()" class="panel panel-body">
+<table border="1" class="tabula">
+$(if login-by == 'trial')
+	<br><div style="text-align: center;">بەخێر بێیت ئێستا تۆ بوویتە خاوەنی  5 دەقیقە ئینتەرنێتی بێ بەرامبەر</div><br>
+$(elif login-by != 'mac')
+	<br><div style="text-align: center;">بەخێربێیت : $(username)!</div><br>
+$(endif)
+<!--	<tr><td align="right">ئای پی ئەدرەس:</td><td>$(ip)</td></tr>-->
+	<tr><td align="right">  بڕی بەکارهێنان </td><td style="direction:ltr"> $(bytes-out-nice)</td></tr>
+$(if session-time-left)
+	<tr><td align="right">کاتی ماوە: </td><td style="direction:ltr">$(session-time-left)</td></tr>
+$(else)
+	<tr><td align="right">کاتی رۆشتوو:</td><td style="direction:ltr">$(uptime)</td></tr>
+$(endif)
+$(if blocked == 'yes')
+	<tr><td align="right">status:</td><td><div style="color: #FF8080">
+<a href="$(link-advert)" target="hotspot_advert">advertisement</a> required</div></td>
+$(elif refresh-timeout)
+	<tr><td align="right">نوێ بونەوە</td><td>$(refresh-timeout)</td>
+$(endif)
+
+</table>
+$(if login-by-mac != 'yes')
+<br>
+<!-- user manager link. if user manager resides on other router, replace $(hostname) by its address
+<button onclick="document.location='http://$(hostname)/user?subs='; return false;">status</button>
+<!-- end of user manager link -->
+<input type="submit" class="btn btn-primary" value="چوونە دەرەوە">
+$(endif)
+</form>
+
+</td>
+</table>
+</body>
+</html>
